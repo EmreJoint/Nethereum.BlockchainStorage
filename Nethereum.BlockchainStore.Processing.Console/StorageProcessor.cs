@@ -2,12 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
-using Nethereum.BlockchainStore.Bootstrap;
-using Nethereum.BlockchainStore.Entities;
 using Nethereum.BlockchainStore.Processors;
 using Nethereum.BlockchainStore.Processors.PostProcessors;
 using Nethereum.BlockchainStore.Processors.Transactions;
 using Nethereum.BlockchainStore.Repositories;
+using Nethereum.BlockchainStore.SQL;
 using Nethereum.JsonRpc.IpcClient;
 using NLog.Fluent;
 
@@ -24,21 +23,15 @@ namespace Nethereum.BlockchainStore.Processing.Console
         public StorageProcessor(string url, string connectionString, string prefix, bool postVm = false)
         {
             _web3 = url.EndsWith(".ipc") ? new Web3.Web3(new IpcClient(url)) : new Web3.Web3(url);
-            var tableSetup = new CloudTableSetup(connectionString);
 
-            _contractTable = tableSetup.GetContractsTable(prefix);
-            var transactionsTable = tableSetup.GetTransactionsTable(prefix);
-            var addressTransactionsTable = tableSetup.GetAddressTransactionsTable(prefix);
-            var blocksTable = tableSetup.GetBlocksTable(prefix);
-            var logTable = tableSetup.GetTransactionsLogTable(prefix);
-            var vmStackTable = tableSetup.GetTransactionsVmStackTable(prefix);
 
-            var blockRepository = new BlockRepository(blocksTable);
-            var transactionRepository = new TransactionRepository(transactionsTable);
-            var addressTransactionRepository = new AddressTransactionRepository(addressTransactionsTable);
-            var contractRepository = new ContractRepository(_contractTable);
-            var logRepository = new TransactionLogRepository(logTable);
-            var vmStackRepository = new TransactionVMStackRepository(vmStackTable);
+
+            var blockRepository = new BlockRepository();
+            var transactionRepository = new TransactionRepository();
+            var addressTransactionRepository = new AddressTransactionRepository();
+            var contractRepository = new ContractRepository();
+            var logRepository = new TransactionLogRepository();
+            var vmStackRepository = new TransactionVMStackRepository();
 
             var contractTransactionProcessor = new ContractTransactionProcessor(_web3, contractRepository,
                 transactionRepository, addressTransactionRepository, vmStackRepository, logRepository);
@@ -64,7 +57,7 @@ namespace Nethereum.BlockchainStore.Processing.Console
 
         public async Task Init()
         {
-            await Contract.InitContractsCacheAsync(_contractTable).ConfigureAwait(false);
+            await Contract.InitContractsCacheAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> ExecuteAsync(int startBlock, int endBlock)
