@@ -46,11 +46,17 @@ namespace Nethereum.BlockchainStore.SQL
     {
       using (var context = new BlockchainStoreContext())
       {
-        context.Entry(block).State = string.IsNullOrEmpty(block.BlockNumber) ?
-                                   EntityState.Added :
-                                   EntityState.Modified;
-
-        await context.SaveChangesAsync();
+        //context.Entry(block).State = string.IsNullOrEmpty(block.BlockNumber) ?
+        //                           EntityState.Added :
+        //                           EntityState.Modified;
+        try
+        {
+          context.Blocks.Add(block);
+          await context.SaveChangesAsync();
+        }
+        catch (System.Exception)
+        {
+        }
       }
     }
   }

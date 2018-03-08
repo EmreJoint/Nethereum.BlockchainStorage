@@ -18,8 +18,9 @@ namespace Nethereum.BlockchainStore.Processing.Console
       //bool postVm = true;
 
       var url = "http://178.211.50.190:8545";
-      var start = 1;
-      var end = 5;
+      //var url = "https://mainnet.infura.io/2riHiBOAVSxHOkL6DfLi";
+      var start = 2778984;
+      var end = 2779984;
       var postVm = false;
       //if (args.Length > 2)
       //  if (args[3].ToLower() == "postvm")

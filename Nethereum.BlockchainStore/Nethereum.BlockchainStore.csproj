@@ -111,18 +111,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repositories\IAddressTransactionRepository.cs" />
+    <Compile Include="Repositories\IBlockRepository.cs" />
+    <Compile Include="Repositories\IContractRepository.cs" />
+    <Compile Include="Repositories\ITransactionLogRepository.cs" />
+    <Compile Include="Repositories\ITransactionRepository.cs" />
+    <Compile Include="Repositories\ITransactionVMStackRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Processors\BlockProcessor.cs" />
     <Compile Include="Processors\IBlockProcessor.cs" />
-    <Compile Include="Repositories\IBlockRepository.cs" />
-    <Compile Include="Repositories\IAddressTransactionRepository.cs" />
     <Compile Include="Processors\Transactions\IContractCreationTransactionProcessor.cs" />
-    <Compile Include="Repositories\IContractRepository.cs" />
     <Compile Include="Processors\Transactions\IContractTransactionProcessor.cs" />
-    <Compile Include="Repositories\ITransactionLogRepository.cs" />
     <Compile Include="Processors\Transactions\ITransactionProcessor.cs" />
-    <Compile Include="Repositories\ITransactionRepository.cs" />
-    <Compile Include="Repositories\ITransactionVMStackRepository.cs" />
     <Compile Include="Processors\Transactions\IValueTransactionProcessor.cs" />
     <Compile Include="Processors\PostProcessors\BlockVmPostProcessor.cs" />
     <Compile Include="Processors\PostProcessors\BlockPostProcessor.cs" />

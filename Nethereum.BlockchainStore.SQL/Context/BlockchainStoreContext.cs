@@ -12,7 +12,7 @@ namespace Nethereum.BlockchainStore.SQL.Context
 
     public BlockchainStoreContext() : base("name=BlockChainConfig")
     {
-      Database.SetInitializer(new DropCreateDatabaseAlways<BlockchainStoreContext>());
+      //Database.SetInitializer(new DropCreateDatabaseAlways<BlockchainStoreContext>());
     }
 
 

@@ -15,12 +15,14 @@ namespace Nethereum.BlockchainStore.Processors.Transactions
 
 
         public ContractCreationTransactionProcessor(
-          Web3.Web3 web3, IContractRepository contractRepository, ITransactionRepository transactionRepository, IAddressTransactionRepository addressTransactionRepository)
+          Web3.Web3 web3, IContractRepository contractRepository, ITransactionRepository transactionRepository
+          //, IAddressTransactionRepository addressTransactionRepository
+          )
         {
             _web3 = web3;
             _contractRepository = contractRepository;
             _transactionRepository = transactionRepository;
-            _addressTransactionRepository = addressTransactionRepository;
+           // _addressTransactionRepository = addressTransactionRepository;
         }
 
         public async Task ProcessTransactionAsync(Transaction transaction, TransactionReceipt transactionReceipt, HexBigInteger blockTimestamp)
@@ -31,17 +33,17 @@ namespace Nethereum.BlockchainStore.Processors.Transactions
             var code = await GetCode(contractAddress).ConfigureAwait(false);
             var failedCreatingContract = HasFailedToCreateContract(code);
 
-            if (!failedCreatingContract)
-                await _contractRepository.UpsertAsync(contractAddress, code, transaction).ConfigureAwait(false);
+            //if (!failedCreatingContract)
+            //    await _contractRepository.UpsertAsync(contractAddress, code, transaction).ConfigureAwait(false);
 
             await _transactionRepository.UpsertAsync(contractAddress, code,
                 transaction, transactionReceipt,
                 failedCreatingContract, blockTimestamp);
 
-            await _addressTransactionRepository.UpsertAsync(
-                transaction,
-                transactionReceipt,
-                failedCreatingContract, blockTimestamp, null, null, false, contractAddress);
+            //await _addressTransactionRepository.UpsertAsync(
+            //    transaction,
+            //    transactionReceipt,
+            //    failedCreatingContract, blockTimestamp, null, null, false, contractAddress);
         }
 
         public async Task<string> GetCode(string contractAddres)

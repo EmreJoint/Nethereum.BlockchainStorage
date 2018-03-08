@@ -22,18 +22,26 @@ namespace Nethereum.BlockchainStore.SQL
     {
       var contract = Contract.CreateContract(contractAddress, code,
           transaction);
-      await InsertOrUpdate(contract);
+      //await InsertOrUpdate(contract);
     }
 
     public async Task InsertOrUpdate(Contract contract)
     {
       using (var context = new BlockchainStoreContext())
       {
-        context.Entry(contract).State = string.IsNullOrEmpty(contract.Address) ?
-                                   EntityState.Added :
-                                   EntityState.Modified;
+        //context.Entry(contract).State = string.IsNullOrEmpty(contract.Address) ?
+        //                           EntityState.Added :
+        //                           EntityState.Modified;
 
-        await context.SaveChangesAsync();
+        try
+        {
+          context.Contracts.Add(contract);
+          await context.SaveChangesAsync();
+        }
+        catch (System.Exception)
+        {
+
+        }
       }
     }
   }

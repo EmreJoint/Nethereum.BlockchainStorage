@@ -7,30 +7,38 @@ using Newtonsoft.Json.Linq;
 
 namespace Nethereum.BlockchainStore.SQL
 {
-  public class TransactionVMStackRepository : ITransactionVMStackRepository
+  public class TransactionVMStackRepository /*: ITransactionVMStackRepository */
   {
 
     public TransactionVMStackRepository()
     {
     }
 
-    public async Task UpsertAsync(string transactionHash,
-        string address,
-        JObject stackTrace)
-    {
-      var entity = TransactionVmStack.CreateTransactionVmStack(transactionHash, address, stackTrace);
-      await InsertOrUpdate(entity);
-    }
+    //public async Task UpsertAsync(string transactionHash,
+    //    string address,
+    //    JObject stackTrace)
+    //{
+    //  var entity = TransactionVmStack.CreateTransactionVmStack(transactionHash, address, stackTrace);
+    //  await InsertOrUpdate(entity);
+    //}
 
     public async Task InsertOrUpdate(TransactionVmStack stack)
     {
       using (var context = new BlockchainStoreContext())
       {
-        context.Entry(stack).State = string.IsNullOrEmpty(stack.TransactionHash) ?
-                                   EntityState.Added :
-                                   EntityState.Modified;
+        //context.Entry(stack).State = string.IsNullOrEmpty(stack.TransactionHash) ?
+        //                           EntityState.Added :
+        //                           EntityState.Modified;
 
-        await context.SaveChangesAsync();
+        try
+        {
+          context.TransactionVmStacks.Add(stack);
+          await context.SaveChangesAsync();
+        }
+        catch (System.Exception)
+        {
+
+        }
       }
     }
   }
